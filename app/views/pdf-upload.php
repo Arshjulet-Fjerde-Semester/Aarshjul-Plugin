@@ -12,6 +12,7 @@ class pdf_upload {
         //This is for the settings that manage pdf
 		add_action( 'admin_menu', array($this, 'menu_page') );
 		add_action( 'admin_init', array($this, 'pdf_upload') );
+        add_action( 'admin_init', array($this, 'pdf_delete') );
     }
 
     //https://developer.wordpress.org/reference/functions/add_settings_field/
@@ -22,6 +23,24 @@ class pdf_upload {
 		add_settings_field('pdftags', 'Add Tags (Hold CTRL for multiple)', array($this, 'pdftagHTML'), 'aarshjul-settings', 'pdfsection');
 		register_setting('aarshjuldata', 'pdfdata' );
 	}
+
+    function pdf_delete(){
+        add_settings_section('showpdf', null, null, 'aarshjul-settings');
+        $pdfs = $this->wpdb->get_results( "SELECT * FROM wp_pdftext" );
+        foreach ($pdfs as $pdf){
+            $args = array( 'label_for' => $pdf->textname, 'pdfid' => $pdf->pdfid, 'path' => $pdf->path);
+            add_settings_field('pdf', $pdf->textname, array($this, 'pdflistHTML'), 'aarshjul-settings', 'showpdf', $args);          
+        }
+        register_setting('aarshjulpdf', 'uploadpdf' );
+    }
+
+    function pdflistHTML( array $args ){ 
+        $pdfid = $args['pdfid'];
+        $path = $args['path'];
+        $value = $args['label_for'];
+        ?>
+        <input type="checkbox" id="<?php echo $pdfid ?>" name="<?php echo $pdfid ?>" value="<?php echo $value ?>">
+    <?php }
 
     function dataHTML(){ ?>
 		<input type="file" name="pdfdata" accept="application/pdf">
@@ -60,19 +79,14 @@ class pdf_upload {
 					submit_button('Upload PDF', 'primary', 'uploadpdf');
 				?>
 			</form>
-			<h1>Uploaded PDF</h1>
+			<!-- <h1>Uploaded PDF</h1>
             <form action="" method="post">
-                <ol>
-                    <?php 
-                    $pdfs = $this->wpdb->get_results( "SELECT * FROM wp_pdftext" );
-                    foreach ($pdfs as $pdf){
-                        echo "<li>" . $pdf->textname . "</li>";
-                        $other_attributes = array( 'pdfid' => $pdf->pdfid);
-                        submit_button('Delete PDF', 'small', 'deletepdf', true, $other_attributes);
-                    }
-                    ?>
-                </ol>          
-            </form>
+                <?php
+                    // settings_fields('aarshjulpdf');
+					// do_settings_sections('aarshjul-settings');
+                    // submit_button('Delete PDF', 'small', 'deletepdf'); 
+                ?>
+            </form> -->
 		</div>
 		<?php
 	}
