@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 require_once 'app/table-install.php';
 require_once 'app/views/pdf-upload.php';
 require_once 'app/views/tag-manage.php';
+
 register_activation_hook( __FILE__, 'aarshjul_table_install' );
 
 //This should setup the Admin Settings Page
@@ -23,8 +24,14 @@ class Aarshjul_Plugin {
 	
 	//This constructor contains all the hooks used for the plugin in settings
 	function __construct() {
+		add_action( 'admin_init', array($this, 'aarshjul_plugin_admin_init') );
 		$pdfupload = new pdf_upload();
 		$tagmanage = new tag_manage();
+	}
+	//register styles for later use
+	function aarshjul_plugin_admin_init() {
+		wp_register_style( 'aarshjulStylesheet', plugins_url( 'app/css/liststyle.css', __FILE__ ) );
+		wp_register_style( 'bootstrapStylesheet', plugins_url( 'app/css/bootstrap.min.css', __FILE__ ) );
 	}
 }
 
