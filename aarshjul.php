@@ -24,14 +24,28 @@ class Aarshjul_Plugin {
 	
 	//This constructor contains all the hooks used for the plugin in settings
 	function __construct() {
-		add_action( 'admin_init', array($this, 'aarshjul_plugin_admin_init') );
+		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_styles') );
+		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_scripts') );
 		$pdfupload = new pdf_upload();
 		$tagmanage = new tag_manage();
 	}
 	//register styles for later use
-	function aarshjul_plugin_admin_init() {
+	function aarshjul_plugin_register_styles() {
+		//wp_register_style( string $handle, REQ
+		//string|bool $src, REQ
+		//string[] $deps = array(), 
+		//string|bool|null $ver = false, 
+		//string $media = 'all' )
 		wp_register_style( 'aarshjulStylesheet', plugins_url( 'app/css/liststyle.css', __FILE__ ) );
 		wp_register_style( 'bootstrapStylesheet', plugins_url( 'app/css/bootstrap.min.css', __FILE__ ) );
+	}
+	//register scripts for later use
+	function aarshjul_plugin_register_scripts(){
+		//wp_register_script( string $handle, REQ
+		//string|bool $src, REQ
+		//string[] $deps = array(), 
+		//string|bool|null $ver = false, 
+		//bool $in_footer = false )
 	}
 }
 
