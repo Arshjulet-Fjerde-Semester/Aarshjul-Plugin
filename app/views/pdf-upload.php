@@ -2,6 +2,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once "../wp-content/plugins/Aarshjul-Plugin/app/database/original/create.php";
+require_once "../wp-content/plugins/Aarshjul-Plugin/app/database/original/read.php";
+// require_once "../database/original/update.php";
+// require_once "../database/original/delete.php";
+
 class pdf_upload {
     
     private $wpdb;
@@ -10,8 +15,8 @@ class pdf_upload {
         global $wpdb;
         $this->wpdb = $wpdb;
         //This is for the settings that manage pdf
-		add_action( 'admin_menu', array($this, 'menu_page') );
-		add_action( 'admin_init', array($this, 'pdf_upload') );
+		    add_action( 'admin_menu', array($this, 'menu_page') );
+		    add_action( 'admin_init', array($this, 'pdf_upload') );
         add_action( 'admin_init', array($this, 'pdf_delete') );
     }
 	
@@ -88,285 +93,69 @@ function dataHTML(){ ?>
 					submit_button('Upload PDF', 'primary', 'uploadpdf');
 				?>
 			</form>
-			<div class="container">
-  <div class="table-wrapper">
-    <div class="table-title">
-      <div class="row">
-        <div class="col-sm-6">
-          <h2>Model</h2>
-        </div>
-        <div class="col-sm-6">
-          <a href="#addModel" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New </span></a>
-          
-        </div>
-      </div>
     </div>
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-          </th>
-          <th>Models</th>
-          <th>Status</th>
-          <th>Schedule</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-          </td>
-          <td>jquery.scrollTo.js</td>
-          <td>Available</td>
-          <td>0:33</td>
-          <td>$55</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-          </td>
-          <td>test.py</td>
-          <td>Available</td>
-          <td>1:10</td>
-          <td>$6.5</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-          </td>
-          <td>model.ckpt-1500.data-00000-of-00001</td>
-          <td>Not Available</td>
-          <td></td>
-          <td>$10.5</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-          </td>
-          <td>setup.py</td>
-          <td>Available</td>
-          <td>1:35</td>
-          <td>$4.7</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-          </td>
-          <td>model.ckpt-0.data-00000-of-00001</td>
-          <td>Available</td>
-          <td>0:45</td>
-          <td>$18.0</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="clearfix">
-      <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-      <ul class="pagination">
-        <li class="page-item disabled"><a href="#">Previous</a></li>
-        <li class="page-item"><a href="#" class="page-link">1</a></li>
-        <li class="page-item"><a href="#" class="page-link">2</a></li>
-        <li class="page-item active"><a href="#" class="page-link">3</a></li>
-        <li class="page-item"><a href="#" class="page-link">4</a></li>
-        <li class="page-item"><a href="#" class="page-link">5</a></li>
-        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <h4 class="modal-title">Add Model</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Models</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label>Status</label>
-            <input type="email" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label>Schedule</label>
-            <textarea class="form-control" required></textarea>
-          </div>
-          <div class="form-group">
-            <label>Amount</label>
-            <input type="text" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-success" value="Add">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Edit Modal HTML -->
-<div id="editEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Employee</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Models</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label>Status</label>
-            <input type="email" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label>Schedule</label>
-            <textarea class="form-control" required></textarea>
-          </div>
-          <div class="form-group">
-            <label>Amount</label>
-            <input type="text" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-info" value="Save">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Delete Modal HTML -->
-<div id="deleteEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Model</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete these Records?</p>
-          <p class="text-warning"><small>This action cannot be undone.</small></p>
-        </div>
-        <div class="modal-footer">
-          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-danger" value="Delete">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-		</div>
 		<?php
 	}
 }
 
-//Handles upload of PDF to the file explorer and saves to the database the path and filename
-global $wpdb;
+// //Handles upload of PDF to the file explorer and saves to the database the path and filename
+// global $wpdb;
 
-    if(isset($_POST['uploadpdf'])){
-		$target_dir = "../wp-content/plugins/Aarshjul-plugin/app/uploads/";
-		$target_file = $target_dir . basename($_FILES["pdfdata"]["name"]);
-		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+//     if(isset($_POST['uploadpdf'])){
+// 		$target_dir = "../wp-content/plugins/Aarshjul-plugin/app/uploads/";
+// 		$target_file = $target_dir . basename($_FILES["pdfdata"]["name"]);
+// 		$uploadOk = 1;
+// 		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-		// Check if file already exists
-		if (file_exists($target_file)) {
-		echo "Sorry, file already exists.";
-		$uploadOk = 0;
-		}
+// 		// Check if file already exists
+// 		if (file_exists($target_file)) {
+// 		echo "Sorry, file already exists.";
+// 		$uploadOk = 0;
+// 		}
 
-		// Allow certain file formats
-		if($imageFileType != "pdf" ) {
-		echo "Sorry, pdf is the only filetype allowed.";
-		$uploadOk = 0;
-		}
+// 		// Allow certain file formats
+// 		if($imageFileType != "pdf" ) {
+// 		echo "Sorry, pdf is the only filetype allowed.";
+// 		$uploadOk = 0;
+// 		}
 
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-		echo "Sorry, your file was not uploaded.";
-		// if everything is ok, try to upload file
-		} 
-		else {
-			if (move_uploaded_file($_FILES["pdfdata"]["tmp_name"], $target_file)) {
-				echo "The file ". htmlspecialchars( basename( $_FILES["pdfdata"]["name"])). " has been uploaded.";
-				echo "We should either call media_handle_upload from wordpress core here, or we should create our own table in the database using https://codex.wordpress.org/Creating_Tables_with_Plugins<br>";
-				echo "For now the files gets uploaded to the plugins own upload dir.";
-				$table_name = $wpdb->prefix . 'pdftext';
+// 		// Check if $uploadOk is set to 0 by an error
+// 		if ($uploadOk == 0) {
+// 		echo "Sorry, your file was not uploaded.";
+// 		// if everything is ok, try to upload file
+// 		} 
+// 		else {
+// 			if (move_uploaded_file($_FILES["pdfdata"]["tmp_name"], $target_file)) {
+// 				echo "The file ". htmlspecialchars( basename( $_FILES["pdfdata"]["name"])). " has been uploaded.";
+// 				echo "We should either call media_handle_upload from wordpress core here, or we should create our own table in the database using https://codex.wordpress.org/Creating_Tables_with_Plugins<br>";
+// 				echo "For now the files gets uploaded to the plugins own upload dir.";
+// 				$table_name = $wpdb->prefix . 'pdftext';
 				
-				$wpdb->insert( 
-					$table_name, 
-					array( 
-						'path' => $target_file, 
-						'textname' => $_FILES["pdfdata"]["name"], 
-					)				
-				);
-				$pdfid = $wpdb->insert_id;
-				//This should add a connection between uploaded PDF and currently available tags instead
-				$table_name = $wpdb->prefix . 'pdftext_tag';
-				foreach ( $_POST['tags'] as $tagid){
-					$wpdb->insert(
-						$table_name,
-						array(
-							'pdfid' => $pdfid,
-							'tagid' => $tagid		
-						)
-					);
-				}
-			} else {
-			echo "Sorry, there was an error uploading your file.";
-			}
-		}
-	}
+// 				$wpdb->insert( 
+// 					$table_name, 
+// 					array( 
+// 						'path' => $target_file, 
+// 						'textname' => $_FILES["pdfdata"]["name"], 
+// 					)				
+// 				);
+// 				$pdfid = $wpdb->insert_id;
+// 				//This should add a connection between uploaded PDF and currently available tags instead
+// 				$table_name = $wpdb->prefix . 'pdftext_tag';
+// 				foreach ( $_POST['tags'] as $tagid){
+// 					$wpdb->insert(
+// 						$table_name,
+// 						array(
+// 							'pdfid' => $pdfid,
+// 							'tagid' => $tagid		
+// 						)
+// 					);
+// 				}
+// 			} else {
+// 			echo "Sorry, there was an error uploading your file.";
+// 			}
+// 		}
+// 	}
 
-    if(isset($_POST['deletepdf'])){
+//     if(isset($_POST['deletepdf'])){
         
-    }
+//     }
