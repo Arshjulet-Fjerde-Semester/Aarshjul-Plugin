@@ -2,8 +2,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once "../wp-content/plugins/Aarshjul-Plugin/app/database/original/create.php";
-require_once "../wp-content/plugins/Aarshjul-Plugin/app/database/original/read.php";
+require_once(__ROOT__.'/app/database/original/create.php');
+require_once(__ROOT__.'/app/database/original/read.php');
 // require_once "../database/original/update.php";
 // require_once "../database/original/delete.php";
 

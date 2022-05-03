@@ -12,6 +12,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+define('__ROOT__', dirname(__FILE__));
+
 //To install DB when activated
 require_once 'app/table-install.php';
 require_once 'app/views/pdf-upload.php';

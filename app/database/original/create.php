@@ -1,6 +1,6 @@
 <?php
 
-require_once "../wp-content/plugins/Aarshjul-Plugin/app/models/original.php";
+require_once(__ROOT__.'/app/models/original.php');
 
 //Handles upload of PDF to the file explorer and saves to the database the path and filename
 global $wpdb;
