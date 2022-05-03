@@ -19,7 +19,7 @@ class Original{
     }
 
     // create product
-    function create(){
+    function create($tagarray){
 
     $this->wpdb->insert( 
         $this->table_name, 
@@ -29,6 +29,20 @@ class Original{
             'color' => $this->color,
         )				
     );
+
+    $originalid = $this->wpdb->insert_id;
+				//This should add a connection between uploaded PDF and currently available tags instead
+				$table_name = 'wp_aa_original_tag';
+				foreach ( $tagarray as $tagid){
+					$this->wpdb->insert(
+						$table_name,
+						array(
+							'originalid' => $originalid,
+							'tagid' => $tagid		
+						)
+					);
+				}
+
     }
 
     function read(){

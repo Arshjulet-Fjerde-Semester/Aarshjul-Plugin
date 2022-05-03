@@ -40,20 +40,8 @@ global $wpdb;
                 $original->titel = $_FILES["pdfdata"]["name"];
                 $original->color = "#ffffff";
 
-                $original->create();
+                $original->create($_POST['tags']);
 
-				// $pdfid = $wpdb->insert_id;
-				// //This should add a connection between uploaded PDF and currently available tags instead
-				// $table_name = $wpdb->prefix . 'pdftext_tag';
-				// foreach ( $_POST['tags'] as $tagid){
-				// 	$wpdb->insert(
-				// 		$table_name,
-				// 		array(
-				// 			'pdfid' => $pdfid,
-				// 			'tagid' => $tagid		
-				// 		)
-				// 	);
-				// }
 			} else {
 			echo "Sorry, there was an error uploading your file.";
 			}

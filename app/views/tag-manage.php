@@ -48,7 +48,7 @@ class tag_manage {
 global $wpdb;
 
 if(isset($_POST['addtag'])){
-    $table_name = $wpdb->prefix . 'tag';
+    $table_name = 'wp_aa_tag';
     $wpdb->insert(
         $table_name,
         array(
