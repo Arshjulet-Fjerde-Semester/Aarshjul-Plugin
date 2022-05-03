@@ -16,7 +16,7 @@ define('__ROOT__', dirname(__FILE__));
 
 //To install DB when activated
 require_once 'app/table-install.php';
-require_once 'app/views/pdf-upload.php';
+require_once 'app/views/original-manage.php';
 require_once 'app/views/tag-manage.php';
 
 register_activation_hook( __FILE__, 'aarshjul_table_install' );
@@ -28,7 +28,7 @@ class Aarshjul_Plugin {
 	function __construct() {
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_styles') );
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_scripts') );
-		$pdfupload = new pdf_upload();
+		$originalmanage = new Original_Manage();
 		$tagmanage = new tag_manage();
 	}
 	//register styles for later use
@@ -40,6 +40,7 @@ class Aarshjul_Plugin {
 		//string $media = 'all' )
 		wp_register_style( 'aarshjulStylesheet', plugins_url( 'app/css/liststyle.css', __FILE__ ) );
 		wp_register_style( 'bootstrapStylesheet', plugins_url( 'app/css/bootstrap.min.css', __FILE__ ) );
+		wp_register_style( 'fontawesomeStylesheet', plugins_url( 'app/css/font-awesome.min.css', __FILE__ ) );
 	}
 	//register scripts for later use
 	function aarshjul_plugin_register_scripts(){
@@ -48,6 +49,8 @@ class Aarshjul_Plugin {
 		//string[] $deps = array(), 
 		//string|bool|null $ver = false, 
 		//bool $in_footer = false )
+		wp_register_script('bootstrapScript', plugins_url( 'app/js/bootstrap.min.js', __FILE__ ));
+		wp_register_script('jqueryScript', plugins_url( 'app/js/jquery.min.js', __FILE__ ));
 	}
 }
 
