@@ -51,6 +51,7 @@ class Aarshjul_Plugin {
 		//bool $in_footer = false )
 		wp_register_script('bootstrapScript', plugins_url( 'app/js/bootstrap.min.js', __FILE__ ));
 		wp_register_script('jqueryScript', plugins_url( 'app/js/jquery.min.js', __FILE__ ));
+		wp_register_script('listScript', plugins_url( 'app/js/list.js', __FILE__ ));
 	}
 }
 

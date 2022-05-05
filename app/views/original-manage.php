@@ -4,8 +4,10 @@ defined( 'ABSPATH' ) || exit;
 
 require_once(__ROOT__.'/app/database/original/create.php');
 require_once(__ROOT__.'/app/database/original/read.php');
+
+require_once(__ROOT__.'/app/database/original/delete.php');
+
 // require_once "../database/original/update.php";
-// require_once "../database/original/delete.php";
 
 class Original_Manage {
     
@@ -83,6 +85,7 @@ function dataHTML(){ ?>
 		wp_enqueue_style( 'fontawesomeStylesheet' );
 		wp_enqueue_script('bootstrapScript');
 		wp_enqueue_script('jqueryScript');
+    wp_enqueue_script('listScript');
 	}
 
 	//This is the HTML that is shown when clicking into aarshjul page
@@ -96,6 +99,13 @@ function dataHTML(){ ?>
 					// submit_button('Upload PDF', 'primary', 'uploadpdf');
 				?>
 			</form> -->
+      <button onclick="getOriginal()">Click me</button>
+      <script type="text/javascript">
+        function getOriginal(){
+          //This function should call a function in C# and hand over the JSON formatted string from PHP function getoriginal
+          alert(<?php echo getoriginal()?>);
+        }
+      </script>
 			<div class="container">
   <div class="table-wrapper">
     <div class="table-title">
@@ -120,12 +130,12 @@ function dataHTML(){ ?>
           </th>
           <th>Titel</th>
           <th>Color</th>
-          <th>Address</th>
-          <th>Phone</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
+        <?php
+        $originalarray = json_decode(getoriginal());
+        foreach ($originalarray as $row){?>
         <tr>
           <td>
             <span class="custom-checkbox">
@@ -133,83 +143,19 @@ function dataHTML(){ ?>
 								<label for="checkbox1"></label>
 							</span>
           </td>
-          <td>Thomas Hardy</td>
-          <td>thomashardy@mail.com</td>
-          <td>89 Chiaroscuro Rd, Portland, USA</td>
-          <td>(171) 555-2222</td>
+          <td><?php echo $row->titel ?></td>
+          <td><?php echo $row->color ?></td>
           <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+            <a href="#editOriginalModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+            <a href="#deleteOriginalModal" class="delete" onclick="document.getElementById('id').value='<?php echo $row->originalid ?>'" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
           </td>
         </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-          </td>
-          <td>Dominique Perrier</td>
-          <td>dominiqueperrier@mail.com</td>
-          <td>Obere Str. 57, Berlin, Germany</td>
-          <td>(313) 555-5735</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-          </td>
-          <td>Maria Anders</td>
-          <td>mariaanders@mail.com</td>
-          <td>25, rue Lauriston, Paris, France</td>
-          <td>(503) 555-9931</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-          </td>
-          <td>Fran Wilson</td>
-          <td>franwilson@mail.com</td>
-          <td>C/ Araquil, 67, Madrid, Spain</td>
-          <td>(204) 619-5731</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-          </td>
-          <td>Martin Blank</td>
-          <td>martinblank@mail.com</td>
-          <td>Via Monte Bianco 34, Turin, Italy</td>
-          <td>(480) 631-2097</td>
-          <td>
-            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-          </td>
-        </tr>
+        <?php }
+        ?>
       </tbody>
     </table>
     <div class="clearfix">
-      <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+      <div class="hint-text">Showing <b><?php echo count($originalarray) ?></b> out of <b><?php echo count($originalarray) ?></b> entries</div>
       <ul class="pagination">
         <li class="page-item disabled"><a href="#">Previous</a></li>
         <li class="page-item"><a href="#" class="page-link">1</a></li>
@@ -222,43 +168,45 @@ function dataHTML(){ ?>
     </div>
   </div>
 </div>
-<!-- Edit Modal HTML -->
+<!-- add Modal HTML -->
 <div id="addOriginalModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+      <form action="" method="post" enctype="multipart/form-data">
         <div class="modal-header">
-          <h4 class="modal-title">Add Employee</h4>
+          <h4 class="modal-title">Add Original</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" required>
+            <label>File</label>
+            <input type="file" name="originaldata" accept="application/pdf" required>
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" required>
+            <select class="form-select" name="tags[]" id="tags" multiple aria-label="multiple select example">
+              <?php
+              $tags = $this->wpdb->get_results( "SELECT * FROM wp_aa_tag" );
+              foreach ($tags as $tag){
+                echo "<option value='" . $tag->tagid . "'>" . $tag->name . "</options>";
+              }
+              ?>
+            </select>
           </div>
           <div class="form-group">
-            <label>Address</label>
-            <textarea class="form-control" required></textarea>
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" required>
+            <label>Color</label>
+            <input type="color" name="color" class="form-control" required>
           </div>
         </div>
         <div class="modal-footer">
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-success" value="Add">
+          <input type="submit" name="type" class="btn btn-success" value="add">
         </div>
       </form>
     </div>
   </div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="editEmployeeModal" class="modal fade">
+<div id="editOriginalModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <form>
@@ -296,7 +244,7 @@ function dataHTML(){ ?>
 <div id="deleteOriginalModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+      <form action="" method="post">
         <div class="modal-header">
           <h4 class="modal-title">Delete Employee</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -306,8 +254,9 @@ function dataHTML(){ ?>
           <p class="text-warning"><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-footer">
+          <input type="hidden" id="id" name="id" value="" />
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-danger" value="Delete">
+          <input type="submit" name="type" class="btn btn-danger" value="delete">
         </div>
       </form>
     </div>

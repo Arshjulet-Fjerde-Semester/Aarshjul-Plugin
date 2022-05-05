@@ -31,17 +31,19 @@ class Original{
     );
 
     $originalid = $this->wpdb->insert_id;
-				//This should add a connection between uploaded PDF and currently available tags instead
-				$table_name = 'wp_aa_original_tag';
-				foreach ( $tagarray as $tagid){
-					$this->wpdb->insert(
-						$table_name,
-						array(
-							'originalid' => $originalid,
-							'tagid' => $tagid		
-						)
-					);
-				}
+    if(!empty($tagarray)){
+        //This should add a connection between uploaded PDF and currently available tags instead
+        $table_name = 'wp_aa_original_tag';
+        foreach ( $tagarray as $tagid){
+            $this->wpdb->insert(
+                $table_name,
+                array(
+                    'originalid' => $originalid,
+                    'tagid' => $tagid		
+                )
+            );
+        }
+    }
 
     }
 

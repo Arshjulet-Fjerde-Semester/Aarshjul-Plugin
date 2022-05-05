@@ -129,34 +129,30 @@ registerBlockType("podkit/editable", {
   title: __("Aarshjul", "podkit"),
   category: "podkit",
   edit: function edit() {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
-      id: "webgl_iframe",
-      frameborder: "0",
-      allow: "autoplay; fullscreen; vr",
-      allowfullscreen: "",
-      allowvr: "",
-      mozallowfullscreen: "true",
-      src: "./../wp-content/plugins/podkit/src/02-editable/index.html",
-      width: "810",
-      height: "640",
-      onmousewheel: "",
-      webkitallowfullscreen: "true"
-    });
+    return (//   <iframe id='webgl_iframe' frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen="" allowvr=""
+      // mozallowfullscreen="true" src="./../wp-content/plugins/aarshjul-plugin/block/src/02-editable/index.html"  width="810"
+      // height="640" onmousewheel="" webkitallowfullscreen="true"></iframe>
+      Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+        "data-v-bfbef82a": "",
+        allow: "geolocation; microphone; camera; midi; encrypted-media;",
+        src: "https://i.simmer.io/@stiggyman/test",
+        allowfullscreen: "allowfullscreen",
+        class: "responsive-frame"
+      }))
+    );
   },
   save: function save() {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
-      id: "webgl_iframe",
-      frameborder: "0",
-      allow: "autoplay; fullscreen; vr",
-      allowfullscreen: "",
-      allowvr: "",
-      mozallowfullscreen: "true",
-      src: "./../wp-content/plugins/podkit/src/02-editable/index.html",
-      width: "810",
-      height: "640",
-      onmousewheel: "",
-      webkitallowfullscreen: "true"
-    });
+    return (//   <iframe id='webgl_iframe' frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen="" allowvr=""
+      // mozallowfullscreen="true" src="./../wp-content/plugins/aarshjul-plugin/block/src/02-editable/index.html"  width="810"
+      // height="640" onmousewheel="" webkitallowfullscreen="true"></iframe>
+      Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+        "data-v-bfbef82a": "",
+        allow: "geolocation; microphone; camera; midi; encrypted-media;",
+        src: "https://i.simmer.io/@stiggyman/test",
+        allowfullscreen: "allowfullscreen",
+        class: "responsive-frame"
+      }))
+    );
   }
 });
 

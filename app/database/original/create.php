@@ -4,10 +4,14 @@ require_once(__ROOT__.'/app/models/original.php');
 
 //Handles upload of PDF to the file explorer and saves to the database the path and filename
 global $wpdb;
-
-    if(isset($_POST['uploadpdf'])){
-		$target_dir = "../wp-content/plugins/Aarshjul-plugin/app/uploads/";
-		$target_file = $target_dir . basename($_FILES["pdfdata"]["name"]);
+if(empty($_POST['type'])){
+	$_POST['type'] = 'null';
+}
+    if($_POST['type'] == 'add'){
+		$target_dir = '../wp-content/plugins/Aarshjul-plugin/app/uploads/';
+		print_r($target_dir);
+		$target_file = $target_dir . basename($_FILES["originaldata"]["name"]);
+		print_r($target_file);
 		$uploadOk = 1;
 		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
@@ -29,16 +33,16 @@ global $wpdb;
 		// if everything is ok, try to upload file
 		} 
 		else {
-			if (move_uploaded_file($_FILES["pdfdata"]["tmp_name"], $target_file)) {
-				echo "The file ". htmlspecialchars( basename( $_FILES["pdfdata"]["name"])). " has been uploaded.";
+			if (move_uploaded_file($_FILES["originaldata"]["tmp_name"], $target_file)) {
+				echo "The file ". htmlspecialchars( basename( $_FILES["originaldata"]["name"])). " has been uploaded.";
 				echo "We should either call media_handle_upload from wordpress core here, or we should create our own table in the database using https://codex.wordpress.org/Creating_Tables_with_Plugins<br>";
 				echo "For now the files gets uploaded to the plugins own upload dir.";
 
                 $original = new Original($wpdb);
 
                 $original->path = $target_dir;
-                $original->titel = $_FILES["pdfdata"]["name"];
-                $original->color = "#ffffff";
+                $original->titel = $_FILES["originaldata"]["name"];
+                $original->color = $_POST['color'];
 
                 $original->create($_POST['tags']);
 

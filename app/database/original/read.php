@@ -8,13 +8,16 @@ header("Content-Type: application/json; charset=UTF-8");
 
 global $wpdb;
 if(isset($_GET['getpdf'])){
+    getoriginal();
+}
+
+function getoriginal(){
+    global $wpdb;
     // initialize object
     $original = new Original($wpdb);
     
     // query products
     $results = $original->read();
-    
-    // $num = $results->rowCount();
       
     // check if more than 0 record found
     if(sizeof($results)>0){
@@ -23,7 +26,7 @@ if(isset($_GET['getpdf'])){
         http_response_code(200);
       
         // show products data in json format
-        echo json_encode($results);
+        return json_encode($results);
     }
       
     else{
@@ -32,7 +35,7 @@ if(isset($_GET['getpdf'])){
         http_response_code(404);
       
         // tell the user no products found
-        echo json_encode(
+        return json_encode(
             array("message" => "No products found.")
         );
     }
