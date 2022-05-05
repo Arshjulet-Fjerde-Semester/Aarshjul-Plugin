@@ -35,8 +35,6 @@ function getoriginal(){
         http_response_code(404);
       
         // tell the user no products found
-        return json_encode(
-            array("message" => "No products found.")
-        );
+        return json_encode(array());
     }
 }
