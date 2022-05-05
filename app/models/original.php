@@ -57,5 +57,12 @@ class Original{
   
     return $results;
     }
+
+    function delete($originalid){
+
+        // execute query
+        $this->wpdb->delete($this->table_name, array('originalid' => $originalid));
+      
+    }
 }
 

@@ -147,7 +147,7 @@ function dataHTML(){ ?>
           <td><?php echo $row->color ?></td>
           <td>
             <a href="#editOriginalModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteOriginalModal" class="delete" onclick="document.getElementById('id').value='<?php echo $row->originalid ?>'" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+            <a href="#deleteOriginalModal" class="delete" onclick="document.getElementById('id').value='<?php echo $row->originalid ?>';document.getElementById('filename').value='<?php echo $row->titel ?>';" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
           </td>
         </tr>
         <?php }
@@ -246,7 +246,7 @@ function dataHTML(){ ?>
     <div class="modal-content">
       <form action="" method="post">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Employee</h4>
+          <h4 class="modal-title">Delete Original</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
@@ -254,7 +254,8 @@ function dataHTML(){ ?>
           <p class="text-warning"><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-footer">
-          <input type="hidden" id="id" name="id" value="" />
+          <input type="hidden" id="filename" name="filename" value="">
+          <input type="hidden" id="id" name="id" value="">
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
           <input type="submit" name="type" class="btn btn-danger" value="delete">
         </div>

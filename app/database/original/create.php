@@ -34,9 +34,6 @@ if(empty($_POST['type'])){
 		} 
 		else {
 			if (move_uploaded_file($_FILES["originaldata"]["tmp_name"], $target_file)) {
-				echo "The file ". htmlspecialchars( basename( $_FILES["originaldata"]["name"])). " has been uploaded.";
-				echo "We should either call media_handle_upload from wordpress core here, or we should create our own table in the database using https://codex.wordpress.org/Creating_Tables_with_Plugins<br>";
-				echo "For now the files gets uploaded to the plugins own upload dir.";
 
                 $original = new Original($wpdb);
 
