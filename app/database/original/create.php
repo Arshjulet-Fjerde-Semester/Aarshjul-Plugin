@@ -9,9 +9,7 @@ if(empty($_POST['type'])){
 }
     if($_POST['type'] == 'add'){
 		$target_dir = '../wp-content/plugins/Aarshjul-plugin/app/uploads/';
-		print_r($target_dir);
 		$target_file = $target_dir . basename($_FILES["originaldata"]["name"]);
-		print_r($target_file);
 		$uploadOk = 1;
 		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
@@ -48,7 +46,3 @@ if(empty($_POST['type'])){
 			}
 		}
 	}
-
-    if(isset($_POST['deletepdf'])){
-        
-    }

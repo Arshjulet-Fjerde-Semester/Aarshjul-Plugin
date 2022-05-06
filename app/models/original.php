@@ -58,6 +58,11 @@ class Original{
     return $results;
     }
 
+    function update($data){
+
+        $this->wpdb->update($this->table_name, array('titel' => $data['titel'], 'color' => $data['color']), array('originalid' => $data['id']));
+    }
+
     function delete($originalid){
 
         // execute query
