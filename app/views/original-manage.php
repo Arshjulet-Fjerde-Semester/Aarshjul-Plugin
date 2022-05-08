@@ -120,7 +120,7 @@ function dataHTML(){ ?>
                 </thead>
                 <tbody>
                     <?php
-                    foreach (json_decode(getoriginal()) as $row){ print_r($row) ?>
+                    foreach (json_decode(getoriginal()) as $row){ ?>
                     <tr>
                         <td>
                             <span class="custom-checkbox">

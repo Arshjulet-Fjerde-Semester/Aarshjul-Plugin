@@ -66,6 +66,7 @@ class Original{
     function delete($originalid){
 
         // execute query
+        $this->wpdb->delete($this->table_name . "_tag", array('originalid' => $originalid));
         $this->wpdb->delete($this->table_name, array('originalid' => $originalid));
       
     }
