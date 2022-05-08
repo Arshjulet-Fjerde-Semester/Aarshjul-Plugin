@@ -8,5 +8,5 @@ if($_POST['type'] == 'update'){
     $original = new Original($wpdb);
     $original->update($_POST);
 
-    rename(__ROOT__ . '/app/uploads/' .$_POST['oldtitel'], __ROOT__ . '/app/uploads/' .$_POST['titel']);
+    rename(__ROOT__ . '/app/uploads/' .$_POST['oldtitle'], __ROOT__ . '/app/uploads/' .$_POST['title']);
 }

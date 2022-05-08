@@ -60,7 +60,7 @@ class Original{
 
     function update($data){
 
-        $this->wpdb->update($this->table_name, array('titel' => $data['titel'], 'color' => $data['color']), array('originalid' => $data['id']));
+        $this->wpdb->update($this->table_name, array('titel' => $data['title'], 'color' => $data['color']), array('originalid' => $data['id']));
     }
 
     function delete($originalid){

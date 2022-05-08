@@ -2,6 +2,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once(__ROOT__.'/app/database/tag/create.php');
+require_once(__ROOT__.'/app/database/tag/read.php');
+require_once(__ROOT__.'/app/database/tag/update.php');
+require_once(__ROOT__.'/app/database/tag/delete.php');
+require_once(__ROOT__.'/app/views/components/manage-tables.php');
+
 class tag_manage {
     function __construct(){
         //This is for the settings that manage tags
@@ -28,38 +34,22 @@ class tag_manage {
 		//callable $function = '', 
 		//int $position = null )
 	function tag_sub_menu(){
-		add_submenu_page('aarshjul-settings', 'Aashjul Tags', 'Tags', 'manage_options', 'aarshjul-tags', array($this, 'manage_tagHTML'));
+		$page = add_submenu_page('aarshjul-settings', 'Aashjul Tags', 'Tags', 'manage_options', 'aarshjul-tags', array($this, 'manage_tagHTML'));
+		add_action( "admin_print_styles-{$page}", array($this, 'aarshjul_plugin_admin_styles') );
 	}
+
+		//Use registered styles
+		function aarshjul_plugin_admin_styles() {
+			wp_enqueue_style( 'aarshjulStylesheet' );
+			wp_enqueue_style( 'bootstrapStylesheet' );
+			wp_enqueue_style( 'fontawesomeStylesheet' );
+			wp_enqueue_script('bootstrapScript');
+			wp_enqueue_script('jqueryScript');
+		wp_enqueue_script('listScript');
+		}
+
 	//HTML when clicking into tag submenu page
-	function manage_tagHTML(){ ?>
-	<div class=wrap>
-			<h1>Aarshjul Manage Tags</h1>
-			<form action="" method="post" enctype="multipart/form-data">
-				<?php
-					settings_fields('aarshjultags');
-					do_settings_sections('aarshjul-tags');
-					submit_button('Save Tag', 'primary', 'addtag');
-				?>
-			</form>
-		</div>
-	<?php }
+	function manage_tagHTML(){
+		tag_manage_table('tag', array('Name'), json_decode(aa_get_tags()));
+	}
 }
-
-global $wpdb;
-
-if(isset($_POST['addtag'])){
-    $table_name = 'wp_aa_tag';
-    $wpdb->insert(
-        $table_name,
-        array(
-            'name' => test_input($_POST['tag'])			
-        )
-    );
-}
-
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
