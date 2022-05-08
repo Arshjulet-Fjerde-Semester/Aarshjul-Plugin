@@ -7,6 +7,8 @@ require_once(__ROOT__.'/app/database/sermon/read.php');
 require_once(__ROOT__.'/app/database/sermon/update.php');
 require_once(__ROOT__.'/app/database/sermon/delete.php');
 
+require_once(__ROOT__.'/app/database/original/read.php');
+
 
 class Sermon_Manage {
 
@@ -86,7 +88,7 @@ class Sermon_Manage {
 							</td>
 							<td><?php echo $row->titel ?></td>
                             <td><?php echo $row->author ?></td>
-                            <td><?php echo $row->originalid ?></td>
+                            <td><?php echo json_decode(get_one_original($row->originalid))->titel ?></td>
 							<td>
 								<a href="#editSermonModal" class="edit"
 									onclick="document.getElementById('editid').value='<?php echo $row->sermonid ?>';document.getElementById('editsermon').value='<?php echo $row->name ?>';document.getElementById('oldsermon').value='<?php echo $row->name ?>';"

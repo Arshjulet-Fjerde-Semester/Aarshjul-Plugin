@@ -38,3 +38,31 @@ function getoriginal(){
         return json_encode(array());
     }
 }
+
+function get_one_original($id){
+    global $wpdb;
+    // initialize object
+    $original = new Original($wpdb);
+    
+    // query products
+    $result = $original->read_one($id);
+      
+    // check if more than 0 record found
+    if($result!=null){
+      
+        // set response code - 200 OK
+        http_response_code(200);
+      
+        // show products data in json format
+        return json_encode($result);
+    }
+      
+    else{
+      
+        // set response code - 404 Not found
+        http_response_code(404);
+      
+        // tell the user no products found
+        return json_encode(array());
+    }
+}

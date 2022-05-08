@@ -58,6 +58,17 @@ class Original{
     return $results;
     }
 
+    function read_one($id){
+
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE originalid='" . $id . "'";
+
+        // execute query
+        $results = $this->wpdb->get_row($query);
+        
+        return $results;
+    }
+
     function update($data){
 
         $this->wpdb->update($this->table_name, array('titel' => $data['title'], 'color' => $data['color']), array('originalid' => $data['id']));
