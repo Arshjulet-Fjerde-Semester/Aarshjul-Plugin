@@ -17,6 +17,7 @@ define('__ROOT__', dirname(__FILE__));
 //To install DB when activated
 require_once 'app/table-install.php';
 require_once 'app/views/original-manage.php';
+require_once 'app/views/sermon-manage.php';
 require_once 'app/views/tag-manage.php';
 
 register_activation_hook( __FILE__, 'aarshjul_table_install' );
@@ -29,7 +30,8 @@ class Aarshjul_Plugin {
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_styles') );
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_scripts') );
 		$originalmanage = new Original_Manage();
-		$tagmanage = new tag_manage();
+		$tagmanage = new Tag_Manage();
+		$sermonmanage = new Sermon_Manage();
 	}
 	//register styles for later use
 	function aarshjul_plugin_register_styles() {
