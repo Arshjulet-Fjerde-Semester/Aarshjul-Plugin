@@ -36,7 +36,7 @@ Class Tag{
     
         function update($data){
     
-            $this->wpdb->update($this->table_name, array('name' => $data['name']), array('tagid' => $data['id']));
+            $this->wpdb->update($this->table_name, array('name' => $data['tag']), array('tagid' => $data['id']));
         }
     
         function delete($tagid){
