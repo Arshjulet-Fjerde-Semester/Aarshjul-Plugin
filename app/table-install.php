@@ -5,29 +5,40 @@ defined( 'ABSPATH' ) || exit;
 function aarshjul_table_install(){
     global $wpdb;
 
-    $table_original = $wpdb->prefix . "aa_" . "Original";
-    $table_tag = $wpdb->prefix . "aa_" . "Tag";
-    $table_original_tag = $wpdb->prefix . "aa_" . "Original_Tag";
-    $table_sermon = $wpdb->prefix . "aa_" . "Sermon";
-    $table_level = $wpdb->prefix . "aa_" . "Level";
+    $prefix = $wpdb->prefix . "aa_";
+    $table_unit = $prefix . "Unit";
+    $table_tag = $prefix . "Tag";
+    $table_unit_tag = $prefix . "Unit_Tag";
+    $table_bibeltext = $prefix . "Bibeltext";
+    $table_sermon = $prefix . "Sermon";
 
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql_original = "CREATE TABLE $table_original (
-        originalid mediumint(9) NOT NULL AUTO_INCREMENT,
-        path nvarchar(255) NOT NULL,
-        titel nvarchar(255) NOT NULL,
+    $sql_unit = "CREATE TABLE $table_unit (
+        unitid mediumint(9) NOT NULL AUTO_INCREMENT,
+        name nvarchar(255) NOT NULL,
+        season nvarchar(255) NOT NULL,
         color nvarchar(255) NOT NULL,
-        PRIMARY KEY  (originalid)
+        PRIMARY KEY  (unitid)
+    ) $charset_collate;";
+
+    $sql_bibeltext = "CREATE TABLE $table_bibeltext (
+        bibeltextid mediumint(9) NOT NULL AUTO_INCREMENT,
+        bookref nvarchar(255) NOT NULL,
+        text nvarchar(255) NOT NULL,
+        unitid mediumint(9) NOT NULL,
+        FOREIGN KEY  (unitid) REFERENCES $table_unit(unitid),
+        PRIMARY KEY  (bibeltextid)
     ) $charset_collate;";
 
     $sql_sermon = "CREATE TABLE $table_sermon (
         sermonid mediumint(9) NOT NULL AUTO_INCREMENT,
-        path nvarchar(255) NOT NULL,
         titel nvarchar(255) NOT NULL,
         author nvarchar(255) NOT NULL,
-        originalid mediumint(9) NOT NULL,
-        FOREIGN KEY  (originalid) REFERENCES $table_original(originalid),
+        year nvarchar(255) NOT NULL,
+        path nvarchar(255) NOT NULL,
+        bibeltextid mediumint(9) NOT NULL,
+        FOREIGN KEY  (bibeltextid) REFERENCES $table_bibeltext(bibeltextid),
         PRIMARY KEY  (sermonid)
     ) $charset_collate;";
 
@@ -37,35 +48,25 @@ function aarshjul_table_install(){
         PRIMARY KEY  (tagid)
     ) $charset_collate;";
 
-    $sql_level = "CREATE TABLE $table_level (
-        levelid mediumint(9) NOT NULL AUTO_INCREMENT,
-        layer mediumint(9) NOT NULL,
+    $sql_unit_tag = "CREATE TABLE $table_unit_tag (
+        unit_tagid mediumint(9) NOT NULL AUTO_INCREMENT,
+        unitid mediumint(9) NOT NULL,
         tagid mediumint(9) NOT NULL,
+        FOREIGN KEY  (unitid) REFERENCES $table_unit(unitid),
         FOREIGN KEY  (tagid) REFERENCES $table_tag(tagid),
-        PRIMARY KEY  (levelid)
-    ) $charset_collate;";
-
-    $sql_original_tag = "CREATE TABLE $table_original_tag (
-        original_tagid mediumint(9) NOT NULL AUTO_INCREMENT,
-        originalid mediumint(9) NOT NULL,
-        tagid mediumint(9) NOT NULL,
-        FOREIGN KEY  (originalid) REFERENCES $table_original(originalid),
-        FOREIGN KEY  (tagid) REFERENCES $table_tag(tagid),
-        PRIMARY KEY  (original_tagid)
+        PRIMARY KEY  (unit_tagid)
     ) $charset_collate;";
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql_original );
-    dbDelta( $sql_tag );
-    dbDelta( $sql_original_tag );
+    dbDelta( $sql_unit );
+    dbdelta( $sql_bibeltext );
     dbdelta( $sql_sermon );
-    dbdelta( $sql_level );
+    dbDelta( $sql_tag );
+    dbDelta( $sql_unit_tag );
 
     add_option( "aarshjul_db_version", "1.0" );
-
-    get_bible_data();
 }
 
-function get_bible_data(){
+function setup_bible_data(){
     
 }
