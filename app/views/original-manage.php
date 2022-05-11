@@ -71,7 +71,7 @@ function dataHTML(){ ?>
 		//string $icon_url = '', 
 		//int $position = null )
 	function menu_page(){
-		$page = add_menu_page('Aarshjul Settings', 'Aarshjul', 'manage_options', 'aarshjul-settings', array($this, 'adminHTML'));
+		$page = add_menu_page('Aarshjul Settings', 'Aarshjul', 'manage_options', 'aarshjul-settings', array($this, 'adminHTML'), 'dashicons-chart-pie');
 		//action to use earlier registered styles
 		add_action( "admin_print_styles-{$page}", array($this, 'aarshjul_plugin_admin_styles') );
 	}
