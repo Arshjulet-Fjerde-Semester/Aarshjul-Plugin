@@ -129,7 +129,7 @@ registerBlockType("podkit/editable", {
   title: __("Aarshjul", "podkit"),
   category: "podkit",
   edit: function edit() {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
       id: "webgl_iframe",
       frameborder: "0",
       allow: "autoplay; fullscreen; vr",
@@ -141,13 +141,29 @@ registerBlockType("podkit/editable", {
       height: "640",
       onmousewheel: "",
       webkitallowfullscreen: "true"
-    }) //<div>
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal fade bd-example-modal-lg ",
+      id: "pupOutWindow",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "myLargeModalLabel",
+      "aria-hidden": "true"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal-dialog modal-lg h100"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal-content h100"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+      src: "",
+      id: "pdfPopUp",
+      frameborder: "0",
+      class: "h100"
+    }))))) //<div>
     //  <iframe data-v-bfbef82a="" allow="geolocation; microphone; camera; midi; encrypted-media;" src="https://i.simmer.io/@stiggyman/test" allowfullscreen="allowfullscreen" class="responsive-frame"></iframe>
     //</div>
     ;
   },
   save: function save() {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
       id: "webgl_iframe",
       frameborder: "0",
       allow: "autoplay; fullscreen; vr",
@@ -159,7 +175,23 @@ registerBlockType("podkit/editable", {
       height: "640",
       onmousewheel: "",
       webkitallowfullscreen: "true"
-    }) //  <div>
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal fade bd-example-modal-lg ",
+      id: "pupOutWindow",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "myLargeModalLabel",
+      "aria-hidden": "true"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal-dialog modal-lg h100"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "modal-content h100"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
+      src: "",
+      id: "pdfPopUp",
+      frameborder: "0",
+      class: "h100"
+    }))))) //  <div>
     //  <iframe data-v-bfbef82a="" allow="geolocation; microphone; camera; midi; encrypted-media;" src="https://i.simmer.io/@stiggyman/test" allowfullscreen="allowfullscreen" class="responsive-frame"></iframe>
     //</div>
     ;
