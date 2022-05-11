@@ -153,7 +153,7 @@ registerBlockType("podkit/editable", {
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       class: "modal-content h100"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
-      src: "",
+      src: "https://www.orimi.com/pdf-test.pdf",
       id: "pdfPopUp",
       frameborder: "0",
       class: "h100"
@@ -187,7 +187,7 @@ registerBlockType("podkit/editable", {
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       class: "modal-content h100"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("iframe", {
-      src: "",
+      src: "https://www.orimi.com/pdf-test.pdf",
       id: "pdfPopUp",
       frameborder: "0",
       class: "h100"
