@@ -28,8 +28,13 @@ class Aarshjul_Plugin {
 	function __construct() {
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_styles') );
 		add_action( 'admin_init', array($this, 'aarshjul_plugin_register_scripts') );
+		add_action( 'enqueue_block_assets', array($this, 'block_styles' ));
 		$originalmanage = new Original_Manage();
 		$tagmanage = new tag_manage();
+	}
+	function block_styles(){
+		wp_enqueue_style( 'bootstrapblockstyle',  plugins_url( 'app/css/bootstrap.min.css', __FILE__ ));
+    	wp_enqueue_script( 'bootstrapblockscript',  plugins_url( 'app/js/bootstrap.min.js', __FILE__ ));
 	}
 	//register styles for later use
 	function aarshjul_plugin_register_styles() {
