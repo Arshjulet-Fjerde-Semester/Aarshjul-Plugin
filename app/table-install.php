@@ -62,4 +62,10 @@ function aarshjul_table_install(){
     dbdelta( $sql_level );
 
     add_option( "aarshjul_db_version", "1.0" );
+
+    get_bible_data();
+}
+
+function get_bible_data(){
+    
 }
