@@ -35,6 +35,7 @@ class Aarshjul_Plugin {
 	function block_styles(){
 		wp_enqueue_style( 'bootstrapblockstyle',  plugins_url( 'app/css/bootstrap.min.css', __FILE__ ));
     	wp_enqueue_script( 'bootstrapblockscript',  plugins_url( 'app/js/bootstrap.min.js', __FILE__ ));
+		wp_enqueue_script( 'bootstrapblockscript',  plugins_url( 'app/js/jquery.min.js', __FILE__ ));
 	}
 	//register styles for later use
 	function aarshjul_plugin_register_styles() {
