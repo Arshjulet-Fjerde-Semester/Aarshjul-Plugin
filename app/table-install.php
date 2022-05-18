@@ -10,7 +10,7 @@ function aarshjul_table_install(){
     $table_unit = $prefix . "Unit";
     $table_tag = $prefix . "Tag";
     $table_unit_tag = $prefix . "Unit_Tag";
-    $table_bibeltext = $prefix . "Bibletext";
+    $table_bibletext = $prefix . "Bibletext";
     $table_sermon = $prefix . "Sermon";
 
     $charset_collate = $wpdb->get_charset_collate();
@@ -23,13 +23,13 @@ function aarshjul_table_install(){
         PRIMARY KEY  (unitid)
     ) $charset_collate;";
 
-    $sql_bibeltext = "CREATE TABLE $table_bibeltext (
-        bibeltextid mediumint(9) NOT NULL AUTO_INCREMENT,
+    $sql_bibletext = "CREATE TABLE $table_bibletext (
+        bibletextid mediumint(9) NOT NULL AUTO_INCREMENT,
         bookref nvarchar(255) NOT NULL,
-        text nvarchar(255) NOT NULL,
+        text longtext NOT NULL,
         unitid mediumint(9) NOT NULL,
         FOREIGN KEY  (unitid) REFERENCES $table_unit(unitid),
-        PRIMARY KEY  (bibeltextid)
+        PRIMARY KEY  (bibletextid)
     ) $charset_collate;";
 
     $sql_sermon = "CREATE TABLE $table_sermon (
@@ -38,8 +38,8 @@ function aarshjul_table_install(){
         author nvarchar(255) NOT NULL,
         year nvarchar(255) NOT NULL,
         path nvarchar(255) NOT NULL,
-        bibeltextid mediumint(9) NOT NULL,
-        FOREIGN KEY  (bibeltextid) REFERENCES $table_bibeltext(bibeltextid),
+        bibletextid mediumint(9) NOT NULL,
+        FOREIGN KEY  (bibletextid) REFERENCES $table_bibletext(bibletextid),
         PRIMARY KEY  (sermonid)
     ) $charset_collate;";
 
@@ -60,7 +60,7 @@ function aarshjul_table_install(){
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql_unit );
-    dbdelta( $sql_bibeltext );
+    dbdelta( $sql_bibletext );
     dbdelta( $sql_sermon );
     dbDelta( $sql_tag );
     dbDelta( $sql_unit_tag );
@@ -148,7 +148,17 @@ function add_units_to_database(){
     
     global $wpdb;
 
+    $books_arr = get_books();
+
+    $bibletexts = array();
+
     foreach($units as $unit){
+        $name_ref = explode(' (', $unit);
+        array_push($bibletexts, Get_x_text($name_ref[1], $books_arr));
+    }
+
+    foreach($units as $unit){
+        $table_name = "wp_aa_Unit";
         $name_ref = explode(' (', $unit);
         $wpdb->insert( 
             $table_name, 
@@ -157,18 +167,19 @@ function add_units_to_database(){
             )
         );
         $lastid = $wpdb->insert_id;
-        add_bibletext_to_database($name_ref[1], $lastid);
+
+        add_bibletext_to_database($name_ref[1], $lastid, $bibletexts[$lastid-1]);
     }
 }
 
-function add_bibletext_to_database($bibleref, $unitid){
+function add_bibletext_to_database($bibleref, $unitid, $text){
     //$books = array("Matthew", "Luke", "John", "Mark" );
 
     global $wpdb;
 
     $table_name = "wp_aa_Bibletext";
 
-    $text = get_x_text($bibleref);
+    $bibleref = trim($bibleref, ')');
 
     $wpdb->insert( 
         $table_name, 
@@ -180,21 +191,35 @@ function add_bibletext_to_database($bibleref, $unitid){
     );
 }
 
-function get_x_text($bibleref){
+function get_books(){
+    $books = array('Matthew', 'Luke', 'John', 'Mark');
+    $books_decoded = array();
+    foreach($books as $book){
+        $url = "https://getbible.net/json?passage=" . $book . "&version=danish";
+        $data = file_get_contents_curl($url);
+        $decoded = json_decode($data);
+        array_push($books_decoded, $decoded);
+    }
+    return $books_decoded;
+}
+
+function get_x_text($bibleref, $books_arr){
+    $return_text = "";
     if($bibleref != "Johs 15,26-16,4)"){
         $book = substr($bibleref, 0, strpos($bibleref, ' '));
         switch($book)
         {
             case "Matt";
-                $book = "Matthew";
+                $book = $books_arr[0];
                 break;
             case "Luk";
-                $book = "Luke";
+                $book = $books_arr[1];
                 break;
             case "Johs";
-                $book = "John";
+                $book = $books_arr[2];
                 break;
             case "Mark";
+                $book = $books_arr[3];
                 break;
         }
         $chapter = substr($bibleref, strpos($bibleref, ' ')+1, strpos($bibleref, ',') - strpos($bibleref, ' ')-1);
@@ -205,23 +230,52 @@ function get_x_text($bibleref){
             $startverse = trim($startverse, "b");
         }
         $endverse = substr($bibleref, strpos($bibleref, '-')+1, strpos($bibleref, ')') - strpos($bibleref, '-')-1);
-        $url = "https://getbible.net/json?passage=" . $book . "&version=danish";
-        $data = file_get_contents_curl($url);
-        $decoded = json_decode($data);
         for( $i = $startverse; $i <= $endverse; $i++){
             if($is_split_exception_done){
-                print_r($decoded->book->{$chapter}->chapter->{strval($i)}->verse);
+                $return_text .= $book->book->{$chapter}->chapter->{strval($i)}->verse;
             }
             else{
-                $text = $decoded->book->{$chapter}->chapter->{strval($i)}->verse;
-                print_r(substr($text, strpos($text, '.') + 1));
+                $text = $book->book->{$chapter}->chapter->{strval($i)}->verse;
+                $return_text .= substr($text, strpos($text, '.') + 1);
                 $is_split_exception_done = true;
             }
         }
     }
     else{
-        johs_special_treatment($bibleref);
+        $return_text = johs_special_treatment($bibleref, $books_arr);
     }
+    return $return_text;
+}
+
+function johs_special_treatment($bibleref, $books_arr){
+    $book = substr($bibleref, 0, strpos($bibleref, ' '));
+    switch($book)
+    {
+        case "Matt";
+            $book = $books_arr[0];
+            break;
+        case "Luk";
+            $book = $books_arr[1];
+            break;
+        case "Johs";
+            $book = $books_arr[2];
+            break;
+        case "Mark";
+            $book = $books_arr[3];
+            break;
+    }
+    $chapter = substr($bibleref, strpos($bibleref, ' ')+1, strpos($bibleref, ',') - strpos($bibleref, ' ')-1);
+    $chapter_two = substr($bibleref, 11, 2);
+    $startverse = substr($bibleref, strpos($bibleref, ',')+1, strpos($bibleref, '-') - strpos($bibleref, ',')-1);
+    $endverse = substr($bibleref, 14, 15);
+    $return_text = "";
+    for( $i = $startverse; $i <= 27; $i++){
+        $return_text .= $book->book->{$chapter}->chapter->{strval($i)}->verse;
+    }
+    for( $i = 1; $i <= $endverse; $i++){
+        $return_text .= $book->book->{$chapter_two}->chapter->{strval($i)}->verse;
+    }
+    return $return_text;
 }
 
 function file_get_contents_curl($url) {
@@ -240,35 +294,4 @@ function file_get_contents_curl($url) {
     $data = trim($data, "();");
 
     return $data;
-}
-
-function johs_special_treatment($bibleref){
-    $book = substr($bibleref, 0, strpos($bibleref, ' '));
-    switch($book)
-    {
-        case "Matt";
-            $book = "Matthew";
-            break;
-        case "Luk";
-            $book = "Luke";
-            break;
-        case "Johs";
-            $book = "John";
-            break;
-        case "Mark";
-            break;
-    }
-    $chapter = substr($bibleref, strpos($bibleref, ' ')+1, strpos($bibleref, ',') - strpos($bibleref, ' ')-1);
-    $chapter_two = substr($bibleref, 11, 2);
-    $startverse = substr($bibleref, strpos($bibleref, ',')+1, strpos($bibleref, '-') - strpos($bibleref, ',')-1);
-    $endverse = substr($bibleref, 14, 15);
-    $url = "https://getbible.net/json?passage=" . $book . "&version=danish";
-    $data = file_get_contents_curl($url);
-    $decoded = json_decode($data);
-    for( $i = $startverse; $i <= 27; $i++){
-        print_r($decoded->book->{$chapter}->chapter->{strval($i)}->verse);
-    }
-    for( $i = 1; $i <= $endverse; $i++){
-        print_r($decoded->book->{$chapter_two}->chapter->{strval($i)}->verse);
-    }
 }
