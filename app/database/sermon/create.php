@@ -32,10 +32,11 @@ if($_POST['type'] == 'addsermon'){
 
                 $sermon = new Sermon($wpdb);
 
-                $sermon->path = $target_dir;
                 $sermon->title = $_FILES["sermondata"]["name"];
                 $sermon->author = $_POST['author'];
-                $sermon->originalid = $_POST['originalid'];
+				$sermon->year = $_POST['year'];
+                $sermon->path = $target_dir;
+                $sermon->bibletextid = $_POST['bibletextid'];
 
                 $sermon->create();
 

@@ -2,10 +2,11 @@
 
 class Sermon{
     public $sermonid;
-    public $path;
     public $title;
     public $author;
-    public $originalid;
+    public $year;
+    public $path;
+    public $bibletextid;
 
     private $table_name;
 
@@ -20,10 +21,11 @@ class Sermon{
         $this->wpdb->insert( 
             $this->table_name, 
             array( 
-                'path' => $this->path, 
                 'titel' => $this->title, 
                 'author' => $this->author,
-                'originalid' => $this->originalid,
+                'year' => $this->year,
+                'path' => $this->path,
+                'bibletextid' => $this->bibletextid,
             )				
         );
     
@@ -42,7 +44,7 @@ class Sermon{
     
         function update($data){
     
-            $this->wpdb->update($this->table_name, array('path' => $data['path'], 'titel' => $data['title'], 'author' => $data['author'],), array('sermonid' => $data['id']));
+            $this->wpdb->update($this->table_name, array('titel' => $data['title'], 'author' => $data['author'], 'path' => $data['path']  ), array('sermonid' => $data['id']));
         }
     
         function delete($sermonid){

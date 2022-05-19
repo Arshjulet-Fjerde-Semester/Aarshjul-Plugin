@@ -72,22 +72,15 @@ function aarshjul_table_install(){
 
 function add_units_to_database(){
     $units = array(
-        "1. søndag i advent (Matt 21,1-9)",
-        "2. søndag i advent (Luk 21,25-36)",
-        "3. søndag i advent (Matt 11,2-10)",
-        "4. søndag i advent (Johs 1,19-28)",
-        "Juledag (Luk 2,1-14)",
-        "2. Juledag (Matt 23,34-39)",
-        "Julesøndag (Luk 2,25-40)",
         "Nytårsdag (Luk 2,21-21)",
+        "søndag efter Nytår (Matt 2,1-12)",
         "Helligtrekongers søndag (Matt 2,1-12)",
-        "1. søndag efter helligtrekonger (Luk 2,41-52)",
-        "1. søndag efter helligtrekonger (Mark 10,13-16)", //DUET
+        "1. søndag efter helligtrekonger (Luk 2,41-52);(Mark 10,13-16)",
         "2. søndag efter helligtrekonger (Johs 2,1-11)",
         "3. søndag efter helligtrekonger (Matt 8,1-13)",
         "4. søndag efter helligtrekonger (Matt 8,23-27)",
-        "5. søndag efter helligtrekonger (Matt 13,24-30)",
-        "5. søndag efter helligtrekonger (Matt 13,44-52)", //DUET
+        "5. søndag efter helligtrekonger (Matt 13,24-30);(Matt 13,44-52)",
+        "6. søndag efter helligtrekonger (Matt 17,1-9)",
         "Sidste søndag efter helligtrekonger (Matt 17,1-9)",
         "Søndag septuagesima (Matt 20,1-16)",
         "Søndag sexsagesima (Mark 4,1-20)",
@@ -99,8 +92,7 @@ function add_units_to_database(){
         "Mariæ bebudelse (Luk 1,26-38)",
         "Palmesøndag (Matt 21,1-9)",
         "Skærtorsdag (Matt 26,17-30)",
-        "Langfredag (Matt 27,31-56)",
-        "Langfredag (Mark 15,20-39)", //DUET
+        "Langfredag (Matt 27,31-56);(Mark 15,20-39)",
         "Påskedag (Mark 16,1-8)",
         "Anden påskedag (Luk 24,13-35)",
         "1. søndag efter påske (Johs 20,19-31)",
@@ -135,14 +127,21 @@ function add_units_to_database(){
         "19. søndag efter trinitatis (Mark 2,1-12)",
         "20. søndag efter trinitatis (Matt 22,1-14)",
         "21. søndag efter trinitatis (Johs 4,46-53)",
-        "Allehelgen (Matt 5,1-12)",
         "22. søndag efter trinitatis (Matt 18,21-35)",
         "23. søndag efter trinitatis (Matt 22,15-22 )",
         "24. søndag efter trinitatis (Matt 9,18-26)",
         "25. søndag efter trinitatis (Matt 24,15-28)",
-        "26. søndag efter trinitatis (Matt 13,24-30)",
-        "26. søndag efter trinitatis (Matt 13,44-52)",
-        "Sidste søndag i kirkeåret (Matt 25,31-46)"
+        "26. søndag efter trinitatis (Matt 13,24-30);(Matt 13,44-52)",
+        "27. søndag efter trinitatis (Matt 25,31-46)",
+        "1. søndag i advent (Matt 21,1-9)",
+        "2. søndag i advent (Luk 21,25-36)",
+        "3. søndag i advent (Matt 11,2-10)",
+        "4. søndag i advent (Johs 1,19-28)",
+        "Juledag (Luk 2,1-14)",
+        "2. Juledag (Matt 23,34-39)",
+        "Julesøndag (Luk 2,25-40)",
+        "Allehelgen (Matt 5,1-12)",
+        "Sidste søndag i kirkeåret (Matt 25,31-46)",
     );
     $table_name = "wp_aa_Unit";
     
@@ -151,14 +150,36 @@ function add_units_to_database(){
     $books_arr = get_books();
 
     $bibletexts = array();
+    //(
+    //array ( "unit"=>"5. søndag efter helligtrekonger", ""bibleref"=>array("ref", "ref"), "texts"=>array("string", "string"))
+    //)
 
     foreach($units as $unit){
         $name_ref = explode(' (', $unit);
-        array_push($bibletexts, Get_x_text($name_ref[1], $books_arr));
+        $bibleref = trim($name_ref[1], ")");
+        $bibleref = str_replace(");(", ";", $bibleref);
+        $bibleref_split = preg_split("/[-\s;,]/", $bibleref);
+        $multiple_ref = array();
+        if(count($bibleref_split) > 6){
+            $first_ref = array($bibleref_split[0], $bibleref_split[1], $bibleref_split[2], $bibleref_split[3]);
+            $second_ref = array($bibleref_split[4], $bibleref_split[5], $bibleref_split[6], $bibleref_split[7]);
+            $multiple_ref = array($first_ref, $second_ref);
+        }
+        else{
+            $multiple_ref = array($bibleref_split);
+        }
+        $texts = array();
+        foreach($multiple_ref as $bible_ref){
+            array_push($texts, Get_x_text($bible_ref, $books_arr));
+        }
+        $bibleref = explode(';', $bibleref);
+        $bibletext_arr = array("unit"=>$name_ref[0], "bibleref"=>$bibleref, "texts"=>$texts);
+        array_push($bibletexts, $bibletext_arr);
     }
 
+    $lastid = 0;
+
     foreach($units as $unit){
-        $table_name = "wp_aa_Unit";
         $name_ref = explode(' (', $unit);
         $wpdb->insert( 
             $table_name, 
@@ -167,28 +188,27 @@ function add_units_to_database(){
             )
         );
         $lastid = $wpdb->insert_id;
-
-        add_bibletext_to_database($name_ref[1], $lastid, $bibletexts[$lastid-1]);
+        add_bibletext_to_database($lastid, $bibletexts[$lastid-1]);
     }
 }
 
-function add_bibletext_to_database($bibleref, $unitid, $text){
+function add_bibletext_to_database($unitid, $texts){
     //$books = array("Matthew", "Luke", "John", "Mark" );
 
     global $wpdb;
 
     $table_name = "wp_aa_Bibletext";
 
-    $bibleref = trim($bibleref, ')');
-
-    $wpdb->insert( 
-        $table_name, 
-        array( 
-            'bookref' => $bibleref,
-            'text' => $text,
-            'unitid' => $unitid
-        )
-    );
+    for( $i = 0; count($texts['bibleref']) > $i; $i++){      
+        $wpdb->insert( 
+            $table_name, 
+            array( 
+                'bookref' => $texts['bibleref'][$i],
+                'text' => $texts['texts'][$i],
+                'unitid' => $unitid
+            )
+        );
+    }
 }
 
 function get_books(){
@@ -205,8 +225,8 @@ function get_books(){
 
 function get_x_text($bibleref, $books_arr){
     $return_text = "";
-    if($bibleref != "Johs 15,26-16,4)"){
-        $book = substr($bibleref, 0, strpos($bibleref, ' '));
+    if(count($bibleref) != 5){
+        $book = $bibleref[0];
         switch($book)
         {
             case "Matt";
@@ -222,20 +242,17 @@ function get_x_text($bibleref, $books_arr){
                 $book = $books_arr[3];
                 break;
         }
-        $chapter = substr($bibleref, strpos($bibleref, ' ')+1, strpos($bibleref, ',') - strpos($bibleref, ' ')-1);
-        $startverse = substr($bibleref, strpos($bibleref, ',')+1, strpos($bibleref, '-') - strpos($bibleref, ',')-1);
         $is_split_exception_done = true;
-        if(str_contains($startverse, "b")){
+        if(str_contains($bibleref[2], "b")){
             $is_split_exception_done = false;
-            $startverse = trim($startverse, "b");
+            $bibleref[2] = trim($bibleref[2], "b");
         }
-        $endverse = substr($bibleref, strpos($bibleref, '-')+1, strpos($bibleref, ')') - strpos($bibleref, '-')-1);
-        for( $i = $startverse; $i <= $endverse; $i++){
+        for( $i = $bibleref[2]; $i <= $bibleref[3]; $i++){
             if($is_split_exception_done){
-                $return_text .= $book->book->{$chapter}->chapter->{strval($i)}->verse;
+                $return_text .= $book->book->{$bibleref[1]}->chapter->{strval($i)}->verse;
             }
             else{
-                $text = $book->book->{$chapter}->chapter->{strval($i)}->verse;
+                $text = $book->book->{$bibleref[1]}->chapter->{strval($i)}->verse;
                 $return_text .= substr($text, strpos($text, '.') + 1);
                 $is_split_exception_done = true;
             }
@@ -248,7 +265,7 @@ function get_x_text($bibleref, $books_arr){
 }
 
 function johs_special_treatment($bibleref, $books_arr){
-    $book = substr($bibleref, 0, strpos($bibleref, ' '));
+    $book = $bibleref[0];
     switch($book)
     {
         case "Matt";
@@ -264,16 +281,12 @@ function johs_special_treatment($bibleref, $books_arr){
             $book = $books_arr[3];
             break;
     }
-    $chapter = substr($bibleref, strpos($bibleref, ' ')+1, strpos($bibleref, ',') - strpos($bibleref, ' ')-1);
-    $chapter_two = substr($bibleref, 11, 2);
-    $startverse = substr($bibleref, strpos($bibleref, ',')+1, strpos($bibleref, '-') - strpos($bibleref, ',')-1);
-    $endverse = substr($bibleref, 14, 15);
     $return_text = "";
-    for( $i = $startverse; $i <= 27; $i++){
-        $return_text .= $book->book->{$chapter}->chapter->{strval($i)}->verse;
+    for( $i = $bibleref[2]; $i <= 27; $i++){
+        $return_text .= $book->book->{$bibleref[1]}->chapter->{strval($i)}->verse;
     }
-    for( $i = 1; $i <= $endverse; $i++){
-        $return_text .= $book->book->{$chapter_two}->chapter->{strval($i)}->verse;
+    for( $i = 1; $i <= $bibleref[4]; $i++){
+        $return_text .= $book->book->{$bibleref[3]}->chapter->{strval($i)}->verse;
     }
     return $return_text;
 }

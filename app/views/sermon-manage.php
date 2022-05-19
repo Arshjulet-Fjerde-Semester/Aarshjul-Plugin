@@ -7,7 +7,7 @@ require_once(__ROOT__.'/app/database/sermon/read.php');
 require_once(__ROOT__.'/app/database/sermon/update.php');
 require_once(__ROOT__.'/app/database/sermon/delete.php');
 
-require_once(__ROOT__.'/app/database/original/read.php');
+require_once(__ROOT__.'/app/database/bibletext/read.php');
 
 
 class Sermon_Manage {
@@ -52,13 +52,13 @@ class Sermon_Manage {
 				<div class="table-title">
 					<div class="row">
 						<div class="col-sm-6">
-							<h2>Manage <b>Sermons </b></h2>
+							<h2>Administrer <b>Prædikener </b></h2>
 						</div>
 						<div class="col-sm-6">
 							<a href="#addSermonModal" class="btn btn-success" data-toggle="modal"><i
-									class="material-icons">&#xE147;</i> <span>Add New Sermon</span></a>
+									class="material-icons">&#xE147;</i> <span>Tilføj Ny Prædiken</span></a>
 							<a href="#deleteSermonModal" class="btn btn-danger" data-toggle="modal"><i
-									class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+									class="material-icons">&#xE15C;</i> <span>Slet</span></a>
 						</div>
 					</div>
 				</div>
@@ -71,9 +71,10 @@ class Sermon_Manage {
 									<label for="selectAll"></label>
 								</span>
 							</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Associated Original</th>
+                            <th>Titel</th>
+                            <th>Forfatter</th>
+							<th>Årstal</th>
+                            <th>Bibeltekst</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -88,7 +89,8 @@ class Sermon_Manage {
 							</td>
 							<td><?php echo $row->titel ?></td>
                             <td><?php echo $row->author ?></td>
-                            <td><?php echo json_decode(get_one_original($row->originalid))->titel ?></td>
+							<td><?php echo $row->year ?></td>
+                            <td><?php echo(json_decode(get_one_bibletext($row->bibletextid)))->bookref ?></td>
 							<td>
 								<a href="#editSermonModal" class="edit"
 									onclick="document.getElementById('editid').value='<?php echo $row->sermonid ?>';document.getElementById('editsermon').value='<?php echo $row->name ?>';document.getElementById('oldsermon').value='<?php echo $row->name ?>';"
@@ -124,30 +126,38 @@ class Sermon_Manage {
 				<div class="modal-content">
 					<form action="" method="post" enctype="multipart/form-data">
 						<div class="modal-header">
-							<h4 class="modal-title">Add Sermon</h4>
+							<h4 class="modal-title">Tilføj Prædiken</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label>Sermon PDF</label>
+								<label>Prædiken PDF</label>
 								<input type="file" name="sermondata" required>
 							</div>
 						</div>
-                        <div class="form-group">
-                            <select class="form-select" name="originalid" id="originals">
-                                <?php
-                                $originals = $this->wpdb->get_results( "SELECT * FROM wp_aa_original" );
-                                foreach ($originals as $original){
-                                    print_r($original);
-                                echo "<option value='" . $original->originalid . "'>" . $original->titel . "</options>";
-                                }
-                                ?>
-                            </select>
-                        </div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Bogreference</label>
+								<select class="form-select" name="bibletextid" id="bibletexts">
+									<?php
+									$bibletexts = json_decode(get_bibletexts());
+									foreach ($bibletexts as $bibletext){
+									echo "<option value='" . $bibletext->bibletextid . "'>" . $bibletext->bookref . "</options>";
+									}
+									?>
+								</select>
+							</div>
+						</div>
                         <div class="modal-body">
 							<div class="form-group">
-								<label>Author</label>
+								<label>Forfatter</label>
 								<input type="text" name="author" required>
+							</div>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>År</label>
+								<input type="text" name="year" required>
 							</div>
 						</div>
 						<div class="modal-footer">
