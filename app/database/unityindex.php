@@ -29,27 +29,27 @@ if($_REQUEST['method'] == 'geteverything'){
     //LEFT JOIN wp_aa_sermon using (bibletextid)
     //GROUP BY unitid"
 
-    print_r($units);
-    $oldunitid = 0;
-    $oldunit;
-    $unitarray = array();
-    foreach($units as $unit){
-        if($unit['unitid'] == $oldunitid){
+    // print_r($units);
+    // $oldunitid = 0;
+    // $oldunit;
+    // $unitarray = array();
+    // foreach($units as $unit){
+    //     if($unit['unitid'] == $oldunitid){
 
-        }
-        else{
-            $newunit = new Unit($unit['unitid'], $unit['name'], $unit['color']);
-            $newbibletext = new Bibletext();
-            $newunit->add_to_bibletexts();
-            array_push($unitarray, $newunit);
-        }
-    }
+    //     }
+    //     else{
+    //         $newunit = new Unit($unit['unitid'], $unit['name'], $unit['color']);
+    //         $newbibletext = new Bibletext();
+    //         $newunit->add_to_bibletexts();
+    //         array_push($unitarray, $newunit);
+    //     }
+    // }
 
     http_response_code(200);
 
-    // $results = json_encode($units);
+    $results = json_encode($units);
 
-    // print_r($results);
+    print_r($results);
 }
 
 class Unit{
