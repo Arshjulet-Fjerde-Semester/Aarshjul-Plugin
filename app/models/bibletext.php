@@ -10,6 +10,7 @@ class Bibletext{
     public $bibletextid;
     public $bookref;
     public $text;
+    public $sermons = array();
     public $unitid;
 
     // constructor with $db as database connection
@@ -62,5 +63,8 @@ class Bibletext{
     function delete($bibletextid){
 
         $this->wpdb->delete($this->table_name, array('bibletextid' => $bibletextid));   
+    }
+    function add_to_sermons($sermon){
+        array_push($sermons, $sermon);
     }
 }
