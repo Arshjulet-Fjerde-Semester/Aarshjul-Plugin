@@ -10,7 +10,6 @@ class Bibletext{
     public $bibletextid;
     public $bookref;
     public $text;
-    public $sermons = array();
     public $unitid;
 
     // constructor with $db as database connection
