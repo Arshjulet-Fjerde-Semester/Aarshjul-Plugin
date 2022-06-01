@@ -30,7 +30,7 @@ class Sermon_Manage {
 		//callable $function = '', 
 		//int $position = null )
 	function sermon_sub_menu(){
-		$page = add_submenu_page('aarshjul-settings', 'Aarshjul Sermons', 'Sermons', 'manage_options', 'aarshjul-sermons', array($this, 'manage_sermonHTML'));
+		$page = add_submenu_page('aarshjul-settings', 'Aarshjul Sermons', 'Prædikener', 'manage_options', 'aarshjul-sermons', array($this, 'manage_sermonHTML'));
 		add_action( "admin_print_styles-{$page}", array($this, 'aarshjul_plugin_admin_styles') );
 	}
 

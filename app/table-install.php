@@ -18,8 +18,8 @@ function aarshjul_table_install(){
     $sql_unit = "CREATE TABLE $table_unit (
         unitid mediumint(9) NOT NULL AUTO_INCREMENT,
         name nvarchar(255) NOT NULL,
-        season nvarchar(255),
-        color nvarchar(255),
+        season nvarchar(255) NOT NULL,
+        color nvarchar(255) NOT NULL,
         PRIMARY KEY  (unitid)
     ) $charset_collate;";
 
@@ -72,76 +72,76 @@ function aarshjul_table_install(){
 
 function add_units_to_database(){
     $units = array(
-        "Nytårsdag (Luk 2,21-21)",
-        "søndag efter Nytår (Matt 2,1-12)",
-        "Helligtrekongers søndag (Matt 2,1-12)",
-        "1. søndag efter helligtrekonger (Luk 2,41-52);(Mark 10,13-16)",
-        "2. søndag efter helligtrekonger (Johs 2,1-11)",
-        "3. søndag efter helligtrekonger (Matt 8,1-13)",
-        "4. søndag efter helligtrekonger (Matt 8,23-27)",
-        "5. søndag efter helligtrekonger (Matt 13,24-30);(Matt 13,44-52)",
-        "6. søndag efter helligtrekonger (Matt 17,1-9)",
-        "Sidste søndag efter helligtrekonger (Matt 17,1-9)",
-        "Søndag septuagesima (Matt 20,1-16)",
-        "Søndag sexsagesima (Mark 4,1-20)",
-        "Fastelavns søndag (Matt 3,13-17)",
-        "1. søndag i fasten (Matt 4,1-11)",
-        "2. søndag i fasten (Matt 15,21-28)",
-        "3. søndag i fasten (Luk 11,14-28)",
-        "Midfaste (Johs 6,1-15)",
-        "Mariæ bebudelse (Luk 1,26-38)",
-        "Palmesøndag (Matt 21,1-9)",
-        "Skærtorsdag (Matt 26,17-30)",
-        "Langfredag (Matt 27,31-56);(Mark 15,20-39)",
-        "Påskedag (Mark 16,1-8)",
-        "Anden påskedag (Luk 24,13-35)",
-        "1. søndag efter påske (Johs 20,19-31)",
-        "2. søndag efter påske (Johs 10,11-16)",
-        "3. søndag efter påske (Johs 16,16-22)",
-        "Bededag / 4. fredag efter påske (Matt 3,1-10)",
-        "4. søndag efter påske (Johs 16,5-15)",
-        "5. søndag efter påske (Johs 16,23b-28)", //Make if that finds . and trim all before DONE
-        "Kristi himmelfart (Mark 16,14-20)",
-        "6. søndag efter påske (Johs 15,26-16,4)", //Expection here too
-        "Pinsedag (Johs 14,22-31)",
-        "Anden pinsedag (Johs 3,16-21)",
-        "Trinitatis søndag (Johs 3,1-15)",
-        "1. søndag efter trinitatis (Luk 16,19-31)",
-        "2. søndag efter trinitatis (Luk 14,16-24)",
-        "3. søndag efter trinitatis (Luk 15,1-10)",
-        "4. søndag efter trinitatis (Luk 6,36-42)",
-        "5. søndag efter trinitatis (Luk 5,1-11)",
-        "6. søndag efter trinitatis (Matt 5,20-26)",
-        "7. søndag efter trinitatis (Luk 19,1-10)",
-        "8. søndag efter trinitatis (Matt 7,15-21)",
-        "9. søndag efter trinitatis (Luk 16,1-9)",
-        "10. søndag efter trinitatis (Luk 19,41-48)",
-        "11. søndag efter trinitatis (Luk 18,9-14)",
-        "12. søndag efter trinitatis (Mark 7,31-37)",
-        "13. søndag efter trinitatis (Luk 10,23-37)",
-        "14. søndag efter trinitatis (Luk 17,11-19)",
-        "15. søndag efter trinitatis (Matt 6,24-34)",
-        "16. søndag efter trinitatis (Luk 7,11-17)",
-        "17. søndag efter trinitatis (Luk 14,1-11)",
-        "18. søndag efter trinitatis (Matt 22,34-46)",
-        "19. søndag efter trinitatis (Mark 2,1-12)",
-        "20. søndag efter trinitatis (Matt 22,1-14)",
-        "21. søndag efter trinitatis (Johs 4,46-53)",
-        "22. søndag efter trinitatis (Matt 18,21-35)",
-        "23. søndag efter trinitatis (Matt 22,15-22 )",
-        "24. søndag efter trinitatis (Matt 9,18-26)",
-        "25. søndag efter trinitatis (Matt 24,15-28)",
-        "26. søndag efter trinitatis (Matt 13,24-30);(Matt 13,44-52)",
-        "27. søndag efter trinitatis (Matt 25,31-46)",
-        "1. søndag i advent (Matt 21,1-9)",
-        "2. søndag i advent (Luk 21,25-36)",
-        "3. søndag i advent (Matt 11,2-10)",
-        "4. søndag i advent (Johs 1,19-28)",
-        "Juledag (Luk 2,1-14)",
-        "2. Juledag (Matt 23,34-39)",
-        "Julesøndag (Luk 2,25-40)",
-        "Allehelgen (Matt 5,1-12)",
-        "Sidste søndag i kirkeåret (Matt 25,31-46)",
+        array("name"=>"Nytårsdag (Luk 2,21-21)","season"=>"Fest (jul)","color"=>"#F4EFE4"),
+        array("name"=>"Søndag efter Nytår (Matt 2,1-12)","season"=>"Fest (jul)","color"=>"#F4EFE4"),
+        array("name"=>"Helligtrekongers søndag (Matt 2,1-12)","season"=>"Fest (jul)","color"=>"#F4EFE4"),
+        array("name"=>"1. søndag efter helligtrekonger (Luk 2,41-52);(Mark 10,13-16)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"2. søndag efter helligtrekonger (Johs 2,1-11)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"3. søndag efter helligtrekonger (Matt 8,1-13)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"4. søndag efter helligtrekonger (Matt 8,23-27)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"5. søndag efter helligtrekonger (Matt 13,24-30);(Matt 13,44-52)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"6. søndag efter helligtrekonger (Matt 17,1-9)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"Sidste søndag efter helligtrekonger (Matt 17,1-9)","season"=>"Efterfest (jul)","color"=>"#B1D682"),
+        array("name"=>"Søndag septuagesima (Matt 20,1-16)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"Søndag sexsagesima (Mark 4,1-20)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"Fastelavns søndag (Matt 3,13-17)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"1. søndag i fasten (Matt 4,1-11)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"2. søndag i fasten (Matt 15,21-28)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"3. søndag i fasten (Luk 11,14-28)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"Midfaste (Johs 6,1-15)","season"=>"Forfest (påske)","color"=>"#7834E0"),
+        array("name"=>"Mariæ bebudelse (Luk 1,26-38)","season"=>"Forfest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"Palmesøndag (Matt 21,1-9)","season"=>"Fest (påske)","color"=>"#7834E0"),
+        array("name"=>"Skærtorsdag (Matt 26,17-30)","season"=>"Fest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"Langfredag (Matt 27,31-56);(Mark 15,20-39)","season"=>"Fest (påske)","color"=>"#010033"),
+        array("name"=>"Påskedag (Mark 16,1-8)","season"=>"Fest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"Anden påskedag (Luk 24,13-35)","season"=>"Fest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"1. søndag efter påske (Johs 20,19-31)","season"=>"Fest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"2. søndag efter påske (Johs 10,11-16)","season"=>"Efterfest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"3. søndag efter påske (Johs 16,16-22)","season"=>"Efterfest (påske)","color"=>"#F4EFE4"),
+        array("name"=>"Bededag / 4. fredag efter påske (Matt 3,1-10)","season"=>"Efterfest (påske)","color"=>"#7834E0"),
+        array("name"=>"4. søndag efter påske (Johs 16,5-15)","season"=>"Forfest (pinse)","color"=>"#F4EFE4"),
+        array("name"=>"5. søndag efter påske (Johs 16,23b-28)","season"=>"Forfest (pinse)","color"=>"#F4EFE4"), //Make if that finds . and trim all before DONE
+        array("name"=>"Kristi himmelfart (Mark 16,14-20)","season"=>"Fest (pinse)","color"=>"#F4EFE4"),
+        array("name"=>"6. søndag efter påske (Johs 15,26-16,4)","season"=>"Fest (pinse)","color"=>"#F4EFE4"),  //Expection here too
+        array("name"=>"Pinsedag (Johs 14,22-31)","season"=>"Fest (pinse)","color"=>"#FA1000"),
+        array("name"=>"Anden pinsedag (Johs 3,16-21)","season"=>"Fest (pinse)","color"=>"#FA1000"),
+        array("name"=>"Trinitatis søndag (Johs 3,1-15)","season"=>"Efterfest (pinse)","color"=>"#F4EFE4"),
+        array("name"=>"1. søndag efter trinitatis (Luk 16,19-31)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"2. søndag efter trinitatis (Luk 14,16-24)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"3. søndag efter trinitatis (Luk 15,1-10)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"4. søndag efter trinitatis (Luk 6,36-42)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"5. søndag efter trinitatis (Luk 5,1-11)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"6. søndag efter trinitatis (Matt 5,20-26)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"7. søndag efter trinitatis (Luk 19,1-10)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"8. søndag efter trinitatis (Matt 7,15-21)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"9. søndag efter trinitatis (Luk 16,1-9)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"10. søndag efter trinitatis (Luk 19,41-48)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"11. søndag efter trinitatis (Luk 18,9-14)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"12. søndag efter trinitatis (Mark 7,31-37)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"13. søndag efter trinitatis (Luk 10,23-37)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"14. søndag efter trinitatis (Luk 17,11-19)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"15. søndag efter trinitatis (Matt 6,24-34)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"16. søndag efter trinitatis (Luk 7,11-17)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"17. søndag efter trinitatis (Luk 14,1-11)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"18. søndag efter trinitatis (Matt 22,34-46)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"19. søndag efter trinitatis (Mark 2,1-12)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"20. søndag efter trinitatis (Matt 22,1-14)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"21. søndag efter trinitatis (Johs 4,46-53)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"22. søndag efter trinitatis (Matt 18,21-35)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"23. søndag efter trinitatis (Matt 22,15-22 )","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"24. søndag efter trinitatis (Matt 9,18-26)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"25. søndag efter trinitatis (Matt 24,15-28)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"26. søndag efter trinitatis (Matt 13,24-30);(Matt 13,44-52)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"27. søndag efter trinitatis (Matt 25,31-46)","season"=>"Trinitatis","color"=>"#B1D682"),
+        array("name"=>"1. søndag i advent (Matt 21,1-9)","season"=>"Forfest (jul)","color"=>"#F5E8CB"),
+        array("name"=>"2. søndag i advent (Luk 21,25-36)","season"=>"Forfest (jul)","color"=>"#7834E0"),
+        array("name"=>"3. søndag i advent (Matt 11,2-10)","season"=>"Forfest (jul)","color"=>"#7834E0"),
+        array("name"=>"4. søndag i advent (Johs 1,19-28)","season"=>"Forfest (jul)","color"=>"#7834E0"),
+        array("name"=>"Juledag (Luk 2,1-14)","season"=>"Fest (jul)","color"=>"#F4EFE4"),
+        array("name"=>"2. Juledag (Matt 23,34-39)","season"=>"Fest (jul)","color"=>"#FA1000"),
+        array("name"=>"Julesøndag (Luk 2,25-40)","season"=>"Fest (jul)","color"=>"#F4EFE4"),
+        array("name"=>"Allehelgen (Matt 5,1-12)","season"=>"Trinitatis","color"=>"#F4EFE4"),
+        array("name"=>"Sidste søndag i kirkeåret (Matt 25,31-46)","season"=>"Trinitatis","color"=>"#B1D682"), 
     );
     $table_name = "wp_aa_Unit";
     
@@ -155,7 +155,7 @@ function add_units_to_database(){
     //)
 
     foreach($units as $unit){
-        $name_ref = explode(' (', $unit);
+        $name_ref = explode(' (', $unit['name']);
         $bibleref = trim($name_ref[1], ")");
         $bibleref = str_replace(");(", ";", $bibleref);
         $bibleref_split = preg_split("/[-\s;,]/", $bibleref);
@@ -180,11 +180,13 @@ function add_units_to_database(){
     $lastid = 0;
 
     foreach($units as $unit){
-        $name_ref = explode(' (', $unit);
+        $name_ref = explode(' (', $unit['name']);
         $wpdb->insert( 
             $table_name, 
             array( 
-                'name' => $name_ref[0], 
+                'name' => $name_ref[0],
+                'season' => $unit['season'],
+                'color' => $unit['color'],
             )
         );
         $lastid = $wpdb->insert_id;
